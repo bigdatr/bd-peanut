@@ -1,0 +1,133 @@
+/*styleguide
+
+title:          Donut Graph
+description:    Basically singular pie charts
+category:       Peanut => Charts
+
+markup:
+
+*/
+
+.DonutGraph {
+    position: relative;
+    text-align: center;
+    float: left;
+    display: block;
+    width: 50%;
+    box-sizing: border-box;
+    border: .25rem solid transparent;
+
+    @include tunic-breakpoint(tiny) {
+        display: table-cell;
+        border: 0;
+        float: none;
+    }
+
+    @include tunic-breakpoint(small) {
+        padding: 1rem;
+    }
+}
+
+
+//
+// The Colored Bit
+// 
+
+.DonutGraph_content {
+    @include tunic-size(100%);
+    margin: auto;
+    position: relative;
+    border-radius: 100%;
+    background: grey(90);
+
+    &:before {
+        content: '';
+        display: block;
+        height: 0;
+        padding-top: (1 / 1) * 100%;
+    }
+
+    &:after {
+        $padding: .25rem;
+        content: '';
+        display: block;
+        background-color: #fff;
+        position: absolute;
+        border-radius: 100%;
+        top: $padding;
+        left: $padding;
+        bottom: $padding;
+        right: $padding;
+    }
+}
+
+.DonutGraph_side {
+    width: 50%;
+    height: 100%;
+    top: 0;
+    overflow: hidden;
+    position: absolute;
+}
+
+.DonutGraph_side-left {
+    left: 0;
+
+    > .DonutGraph_fill {
+        left: 100%;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        transform: rotate(0);
+        transform-origin: 0 50%;
+    }
+}
+
+.DonutGraph_side-right {
+    left: 50%;
+
+    > .DonutGraph_fill {
+        left: -100%;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        transform: rotate(0);
+        transform-origin: 100% 50%;
+    }
+}
+
+.DonutGraph_fill {
+    border-radius: 99999px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+
+//
+// Labels
+// 
+
+.DonutGraph_labels {
+    @include tunic-position-verticalMiddle();
+    left: 0;
+    right: 0;
+    color: grey(40);    
+}
+
+.DonutGraph_value {
+    @include tunic-fontWeight(thin);
+    font-size: 2em;
+    line-height: .8em;
+
+    @include tunic-breakpoint(small) {
+        font-size: 2rem;
+    }
+
+    @include tunic-breakpoint(medium) {
+        font-size: 3rem;
+    }
+}
+
+.DonutGraph_title {
+    text-transform: capitalize;
+    color: grey(60);
+}
+

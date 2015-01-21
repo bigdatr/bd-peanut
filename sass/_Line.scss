@@ -1,0 +1,35 @@
+/*styleguide
+
+title:          Line Graph
+description:    SVG!
+category:       Peanut => Charts
+
+*/
+
+.Line {
+    
+    @include tunic-fontWeight(bold);
+    // 
+    svg {
+        box-shadow: -2px 2px grey(90);
+    }
+}
+
+.Line_path {
+    stroke: grey(90);
+    stroke-width: 2;
+    stroke-linejoin: round;
+    fill: none;
+}
+
+.Line_xlabel {
+    font-size: .8em;
+    fill: grey(40);
+    text-anchor: middle;
+}
+
+.Line_ylabel {
+    fill: darken($yaxisColor, 10);
+    font-size: .8em;
+    text-anchor: end;
+}

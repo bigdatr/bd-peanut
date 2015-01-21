@@ -1,0 +1,166 @@
+/*styleguide
+
+title:          Column Graph
+description:    Fixed table layouts transformed into column graphs
+category:       Peanut => Charts
+
+*/
+
+$yaxisWidth: 80px;
+$yaxisWidth-tiny: 45px;
+$yaxisTickWidth: 4px;
+$yaxisTickHeight: 2px;
+$yaxisColor: grey(90);
+
+
+.Column {
+    padding-left: $yaxisWidth-tiny;
+    position: relative;
+    margin: 3rem 0;
+
+    @include tunic-breakpoint(tiny) {        
+        padding-left: $yaxisWidth;
+    }
+
+}
+
+.Column_wrapper {
+    @extend %graphtype-table; 
+}
+
+.Column_col {
+    @extend %graphtype-table_col; 
+    position: relative;
+    border-left-color: transparent;
+    border-left-style: solid;
+    border-left-width: 4px;
+
+    @include tunic-breakpoint(small) {        
+        border-width: 8px;
+    }
+}
+
+.Column_seriesWrapper {
+    @include tunic-flood;
+    @extend %graphtype-table; 
+    overflow: hidden;
+}
+
+.Column_series {
+    @extend %graphtype-table_col; 
+    background-color: grey(90);
+    transition: transform 160ms;
+    width: 100%;
+
+}
+
+.Column_xlabel {
+    top: 100%;
+    padding-top: .2rem;   
+    margin-top: .25rem;
+}
+
+// Y Axis
+.Column_yaxis {
+    @include tunic-flood;
+    @include tunic-fontWeight(bold);
+    width: $yaxisWidth-tiny;
+    box-shadow: inset -2px 0 0 0 $yaxisColor;
+
+    @include tunic-breakpoint(tiny) {
+        
+        width: $yaxisWidth;
+    }
+}
+
+.Column_ylabel {
+    line-height: 0;
+    padding-right: 16px;
+    height: 20%;
+    text-align: right;
+    color: darken($yaxisColor, 10);
+    font-size: .8em;
+
+    &:after {
+        position: absolute;
+        right: 0;
+        content: '';
+        display: block;
+        width: $yaxisTickWidth;
+        height: $yaxisTickHeight;
+        margin-top: -$yaxisTickHeight;
+        background-color: $yaxisColor;
+    }
+
+    &:first-child:after {
+        margin-top: 0;
+    }
+}
+
+
+
+.Column_valueBar {
+    border-top: 1px solid rgba(0, 0, 0, .2);
+    position: absolute;
+    transition: all 160ms;
+    // left: calc(#{$yaxisWidth} - #{$yaxisTickWidth});
+    left: $yaxisWidth;
+    right: 0;
+}
+
+
+//
+// Stacked Version 
+// 
+
+.Column-stacked {
+    .Column_series {
+        @include tunic-flood();
+        display: block;
+    }
+}
+
+
+//
+// Tight Version 
+//
+
+.Column-tight {
+    .Column_col {
+        border-left-width: 2px;
+
+        @include tunic-breakpoint(small) {
+            border-left-width: 4px;
+        }
+
+
+    }
+}
+
+//
+// Vertical Labels
+//
+.Column-verticalLabel {
+    .Column_xlabel {
+        top: 100%;
+        font-size: .8em;
+        width: 100%;
+        margin-top: 50%;
+        display: block;
+        transform: rotate(90deg);
+        text-align: left;
+    }    
+}
+
+.Column_tooltip {
+    
+    transition: opacity 80ms 160ms;
+    position: absolute;
+    background-color: #fff;
+    border: 2px solid grey(90);
+    padding: 0 1rem;
+
+    .Column_seriesItem {
+        margin: 1em 0;
+    }
+}

@@ -1,0 +1,93 @@
+
+$yaxisWidth: 80px;
+$yaxisWidth-tiny: 45px;
+$yaxisTickWidth: .5rem;
+$yaxisTickHeight: 2px;
+$yaxisColor: grey(90);
+
+
+
+.Graph {
+    padding-left: $yaxisWidth-tiny;
+    position: relative;
+    margin: 3rem 0;
+
+    @include tunic-breakpoint(tiny) {        
+        padding-left: $yaxisWidth;
+    }
+
+}
+
+.Graph_axis {
+    @include tunic-fontWeight(bold);
+}
+
+
+// Y Axis
+.Graph_yaxis {
+    @include tunic-flood;
+    @include tunic-fontWeight(bold);
+    width: $yaxisWidth-tiny;
+    // box-shadow: inset -2px 0 0 0 $yaxisColor;
+
+    @include tunic-breakpoint(tiny) {
+        
+        width: $yaxisWidth;
+    }
+}
+
+/**
+ * Graph Labels
+ * 
+ */
+
+%Graph_label {
+    @include tunic-fontWeight(bold);
+    display: block;
+    position: absolute;
+    text-align: center;
+    text-transform: uppercase;
+    color: grey(80);
+    font-size: .8em;
+    width: 100%;
+    line-height: 1.2;
+}
+
+%Graph_xlabel,
+.Graph_xlabel {
+    @extend %Graph_label; 
+    color: grey(40);
+}
+
+.Graph_ylabel {    
+    @extend %Graph_label; 
+}
+
+
+%Graph_ytitle,
+.Graph_ytitle {    
+    -ms-filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); /* for IE8 */
+    @include tunic-ellipsis;
+    position: relative;
+    transform: rotate(-90deg);
+    width: 126px;
+    top: -55px;
+    left: -48px;
+    text-align: left;
+    display: block;
+    font-size: .85em;
+    // color: darken($yaxisColor, 10);
+    // position: absolute;
+    // white-space: nowrap;
+    // top: -2.5rem;
+
+    // @include tunic-breakpoint(tiny) {        
+    //     transform: rotate(-90deg) translateX(-50%);
+    //     -ms-filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); /* for IE8 */
+    //     top: 50%;
+    //     text-align: center;
+    //     overflow: visible;
+    //     transform-origin: top left;
+    // }
+}
+

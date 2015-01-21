@@ -1,0 +1,17 @@
+/*styleguide
+
+title:          Chart Wrapper
+description:    allows the stacking of charts by css
+category:       Peanut => Charts
+
+*/
+
+.Chart {
+    position: relative;
+}
+
+.Chart-stacked {
+    .Column + .Column {
+        position: absolute;
+    }
+}

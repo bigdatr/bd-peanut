@@ -1,0 +1,1 @@
+console.warn('bd-peanut', 'DEPRECATED: require path must be directly to the component', "require('bd-peanut/components/Column.jsx')");

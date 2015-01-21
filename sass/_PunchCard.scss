@@ -1,0 +1,84 @@
+/*styleguide
+
+title:          Donut Graph
+description:    Basically singular pie charts
+category:       Peanut => Charts
+
+markup:
+
+*/
+
+
+@keyframes widthIn {
+    0% {    
+        width: 0%;
+    }
+
+    100% {   
+        width: inherit;
+    }
+}
+
+.PunchCardGraph {
+    @extend %graphtype-table;
+    margin: 32px 0;
+    padding-bottom: 32px;
+    min-height: 80px;
+    color: grey(70);
+    -webkit-font-smoothing: subpixel-antialiased;
+
+    @include tunic-breakpoint(small){
+        min-height: 160px;
+    }
+}
+
+.PunchCardGraph_segment {
+    @extend %graphtype-table_col;
+    animation: widthIn t($TIME_regular);
+    transition: t($TIME_regular);
+    border-bottom: 2px solid;
+    vertical-align: middle;
+    height: 100%;
+
+    &:before {
+        @extend %Graph_xlabel;
+        content: attr(data-label);
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        left: 0;
+        font-size: 13px;
+    }
+}
+
+.PunchCardGraph_wrap {
+    position: relative;
+}
+
+.PunchCardGraph_fill {
+    border-radius: 100%;
+    background-color: grey(80);
+    transition: transform t($TIME_regular);
+    font-size: 1.2em;
+
+    @include tunic-breakpoint(tiny) {
+        font-size: 1em;        
+    }
+
+    @include tunic-breakpoint(small) {
+        font-size: 2em;        
+    }
+
+    &:before {
+        position: relative;
+        padding: 50% 0;
+        display: block;
+        color: #fff;
+        line-height: 0%;
+        top: 0;
+        height: 0;
+        content: attr(data-label);   
+        
+
+    }
+}

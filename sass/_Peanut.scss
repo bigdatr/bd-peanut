@@ -1,0 +1,32 @@
+@import '../node_modules/Tunic/tunic.scss';
+//
+// Base Graph Clases
+// 
+
+%graph {
+    box-sizing: border-box; 
+    width: 100%;
+    min-height: 240px;
+    margin-bottom: 2rem;
+}
+
+%graphtype-table {
+    @extend %graph;
+    display: table;
+    table-layout: fixed;
+}
+
+%graphtype-table_col {
+    position: relative;
+    display: table-cell;
+    text-align: center;
+
+    &.is-exiting {
+        width: 0%;
+
+        &:before {
+            opacity: 0;
+            transition: 320ms;
+        }
+    }
+}
