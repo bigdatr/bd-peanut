@@ -4,7 +4,7 @@ var React = require('react'),
     _ = require('lodash'),
     moment = require('moment');
 
-var Maths = require('stampy/src/utils/Maths');
+var Maths = require('bd-stampy/utils/Maths');
 var Legend = require('./Legend.jsx');
 var _MAX_TICKS = 10;
 

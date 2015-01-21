@@ -1,9 +1,8 @@
 /** @jsx React.DOM */
 var React = require('react');
 var _ = require('lodash');
-var CSS = require('stampy/src/utils/CSS');
 
-var Compare = require('stampy/src/utils/Compare');
+var CSS = require('bd-stampy/utils/CSS');
 
 var Column_series = React.createClass({
     displayName: 'Column_series',

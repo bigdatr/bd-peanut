@@ -2,7 +2,7 @@
 var React = require('react');
 var _ = require('lodash');
 
-var Compare = require('stampy/src/utils/Compare');
+var Compare = require('bd-stampy/utils/Compare');
 
 var Legend = React.createClass({
     propTypes: {

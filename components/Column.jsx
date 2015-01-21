@@ -2,21 +2,18 @@
 
 var React = require('react');
 var _ = require('lodash');
-var Maths = require('stampy/src/utils/Maths');
+var Maths = require('bd-stampy/utils/Maths');
 var Legend = require('./Legend.jsx');
 
-
-var Stampy = require('stampy');
-
 var Column_series = require('./Column_series.jsx');
+
+var ClassMixin = require('bd-stampy/mixins/ClassMixin');
 
 var _MAX_TICKS = 10;
 
 var Column = React.createClass({
     displayName: 'Column',
-    mixins: [
-        Stampy.ClassMixin
-    ],
+    mixins: [ClassMixin],
     propTypes: {         
         data: React.PropTypes.array.isRequired,
         colors: React.PropTypes.arrayOf(React.PropTypes.string),

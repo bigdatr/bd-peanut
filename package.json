@@ -31,8 +31,7 @@
   },
   "devDependencies": {
     "Tunic": "git://github.com/allanhortle/Tunic",
-    "jest-cli": "^0.1.16",
-    "stampy": "git+ssh://git@git.bigdatr.com:7999/bd/stampy.git"
+    "jest-cli": "^0.1.16"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/preprocessor.js",

@@ -2,11 +2,14 @@
 
 var React = require('react');
 
-var CSS = require('stampy/src/utils/CSS');
+var CSS = require('bd-stampy/utils/CSS');
 
 var Donut = React.createClass({
     displayName: 'Donut',
-
+    getSplitValue: function () {
+        var value = this.props.data.value;
+        return [Math.max(0, value - 50), Math.min(Math.max(value, 0), 50)];
+    },
     render: function () {
         var color = {backgroundColor: this.props.data.fill};
 
@@ -15,10 +18,6 @@ var Donut = React.createClass({
 
         leftStyle.rotate(this.getSplitValue()[0]);
         rightStyle.rotate(this.getSplitValue()[1]);
-
-        var testCSS = new CSS(color);
-
-        console.log('testCSS', testCSS);
 
         return (
             <div className="DonutGraph">
@@ -37,10 +36,6 @@ var Donut = React.createClass({
             </div>
         );
         
-    },
-    getSplitValue: function () {
-        var value = this.props.data.value;
-        return [Math.max(0, value - 50), Math.min(Math.max(value, 0), 50)];
     }
 });
 
