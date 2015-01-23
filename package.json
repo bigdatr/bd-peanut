@@ -4,7 +4,7 @@
   "description": "React chart components",
   "main": "peanut.js",
   "scripts": {
-    "test": "jes"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
