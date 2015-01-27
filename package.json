@@ -26,12 +26,12 @@
   "dependencies": {
     "bd-stampy": "^0.1.2",
     "lodash": "^3.0.0",
-    "moment": "^2.8.3",
-    "react": "^0.11.1"
+    "moment": "^2.9.0",
+    "react": "^0.12.2"
   },
   "devDependencies": {
     "Tunic": "git://github.com/allanhortle/Tunic",
-    "jest-cli": "^0.1.16"
+    "jest-cli": "^0.2.1"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/preprocessor.js",
