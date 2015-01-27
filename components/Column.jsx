@@ -90,13 +90,13 @@ var Column = React.createClass({
 
         tickInterval = tickInterval || this.props.tickInterval;
 
-        var extent = Maths.extent(
-            _.chain(data)
+        var _values = _.chain(data)
                 .map('series')
                 .flatten()
                 .remove(null)
-                .value()
-        );
+                .value();
+
+        var extent = Maths.extent(_values);
         
         var max = extent[1] || 0;
         

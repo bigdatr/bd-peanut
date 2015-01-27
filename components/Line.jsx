@@ -47,17 +47,17 @@ var Line = React.createClass({
         data = data || this.props.data;
         tickInterval = tickInterval || this.props.tickInterval;
 
-        var extent = Maths.extent(
-            _.chain(data)
-                .map(function(s) {
-                    return s.map(function(d) {
-                        return d.value;
-                    });
-                })
-                .flatten()
-                .remove(null)
-                .value()
-        );
+        var _values = _.chain(data)
+                            .map(function(s) {
+                                return s.map(function(d) {
+                                    return d.value;
+                                });
+                            })
+                            .flatten()
+                            .remove(null)
+                            .value();
+
+        var extent = Maths.extent(_values);
         
         var max = extent[1] || 0;
         var roundToNearest = tickInterval;
