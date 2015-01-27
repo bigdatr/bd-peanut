@@ -6,6 +6,7 @@ var React = require('react'),
 
 var Maths = require('bd-stampy/utils/Maths');
 var Legend = require('./Legend.jsx');
+
 var _MAX_TICKS = 10;
 
 var Line = React.createClass({
@@ -62,6 +63,7 @@ var Line = React.createClass({
         var max = extent[1] || 0;
         var roundToNearest = tickInterval;
         var roundMax = Math.ceil(max / roundToNearest) * roundToNearest;
+
         var numberOfTicks = roundMax / tickInterval;
 
         if (numberOfTicks > _MAX_TICKS) {
@@ -87,7 +89,7 @@ var Line = React.createClass({
             height = this.state.height - this.props.padding;
 
         if (numberOfTicks > 0) {
-            yRange = Maths.tickRange(numberOfTicks, 0, max);
+            yRange = Maths.tickRange(numberOfTicks, 0, roundMax);
         }
 
         var ySpacer = height / yRange.length;
