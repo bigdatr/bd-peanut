@@ -221,9 +221,11 @@ var Line = React.createClass({
         return <g className="yAxis">{labels}</g>;
     },
     renderXAxis: function(computedValues) {
-        if (this.props.data[0].length !== this.props.data[1].length) {
-            console.warn('benchmark and query days do not match!');
-        }
+        this.props.data.forEach(function(d, i) {
+            if (d.length !== this.props.data[i].length) {
+                console.warn('Each series must have a value for the same data points');
+            }
+        }.bind(this));
 
         var _this = this;
 
