@@ -31,17 +31,19 @@ var Line = React.createClass({
     componentDidMount: function() {
         this.setState({width: this.refs.graphContent.getDOMNode().clientWidth});
     },
-    getMax: function() {
-        var MAX = _.chain(this.props.data)
-                    .flatten()
-                    .max(function(d) {
-                        return d.value;
-                    })
-                    .value();
+    getY: function(val, MAX) {
+        var h = this.state.height - this.props.padding;
+        return h - ((val / MAX) * h);
+    },
+    getX: function(val, numberOfTicks) {
+        var padding = this.props.padding;
+        var w = this.state.width - padding;
+        var xSpacer = w / numberOfTicks;
 
-        return MAX.value;
+        return (val * xSpacer) + padding;
     },
     getComputedValues: function(data, tickInterval) {
+        // TODO: Refactor this function and add tests!!
         data = data || this.props.data;
         tickInterval = tickInterval || this.props.tickInterval;
 
@@ -79,10 +81,38 @@ var Line = React.createClass({
             return this.getComputedValues(data, nextTickInterval);
         }
 
+
+        // More calcs
+        var yRange = [],
+            height = this.state.height - this.props.padding;
+
+        if (numberOfTicks > 0) {
+            yRange = Maths.tickRange(numberOfTicks, 0, max);
+        }
+
+        var ySpacer = height / yRange.length;
+
+        var yPadding = 0,
+            diff = (yRange.length - 1) * ySpacer;
+
+        if (diff < height) {
+            yPadding = height - diff;
+        }
+
+
+        // X Calcs
+        var xRange = this.getXLabels(this.props.data[0][0].date, this.props.data[0][this.props.data[0].length - 1].date);
+        var xSpacer = (this.state.width - this.props.padding) / xRange.length;
+
         return {
             min: extent[0] || 0,
             max: roundMax,
-            numberOfTicks: numberOfTicks
+            numberOfTicks: numberOfTicks,
+            ySpacer: ySpacer,
+            yPadding: yPadding,
+            yRange: yRange,
+            xRange: xRange,
+            xSpacer: xSpacer
         };
     },
     getPath: function(series, MAX) {
@@ -90,21 +120,13 @@ var Line = React.createClass({
             return 'M0,0';
         }
 
-        var padding = this.props.padding;
-        var h = this.state.height - padding,
-            w = this.state.width - padding;
-
-        var xSpacer = w / series.length;
-
-        var getY = function(val) {
-            return h - ((val / MAX) * h);
-        };
+        var _this = this;
 
         var path = _.chain(series)
                         .map(function(d, i) {
                             return {
-                                x: (i * xSpacer) + padding,
-                                y: getY(d.value)
+                                x: _this.getX(i, series.length),
+                                y: _this.getY(d.value, MAX)
                             };
                         })
                         .map(function(d, i) {
@@ -150,6 +172,7 @@ var Line = React.createClass({
     },
     render: function () {
         var computedValues = this.getComputedValues(this.props.data, this.props.tickInterval);
+
         return (
             <div className="Line Graph">
                 <Legend legend={this.props.legend} colors={this.props.colors}></Legend>
@@ -160,90 +183,59 @@ var Line = React.createClass({
                     <svg width={this.state.width} height={this.state.height} viewBox={[0, 0, this.state.width, this.state.height].join(' ')}>
                         {this.renderYAxis(computedValues)}
                         {this.renderXAxis(computedValues)}
-                        {this.renderSeries()}
+                        {this.renderSeries(computedValues)}
                     </svg>
                 </div>
             </div>
         );
     },
-    renderSeries: function() {
+    renderSeries: function(computedValues) {
         var data = this.props.data || [];
-
-        var MAX = this.getMax();
 
         return data.map(function(d, i) {
             var seriesStyle = {
                 stroke: this.props.colors[i]
             };
 
-            return <path className="Line_path" key={i} style={seriesStyle} d={this.getPath(d, MAX)} />;
+            return (
+                <g key={i} className={'series series-' + (i+1)}>
+                    <path className="Line_path" style={seriesStyle} d={this.getPath(d, computedValues.max)} />
+                </g>
+            );
         }.bind(this)).reverse();
     },
-    renderYAxis: function (computedValues) {        
-        var range = [],
-            height = this.state.height - this.props.padding;
-
-        if (computedValues.numberOfTicks > 0) {
-            range = Maths.tickRange(computedValues.numberOfTicks, 0, computedValues.max);
-        }
-
-        var ySpacer = height / range.length;
-        var padding = 0,
-            diff = (range.length - 1) * ySpacer;
-
-        if (diff < height) {
-            padding = height - diff;
-        }
-
-        var labels = _.map(range, function(key, i) {
-            var lbl = key,
-                y = i * ySpacer + padding;
+    renderYAxis: function (computedValues) {
+        var labels = _.map(computedValues.yRange, function(key, i) {
+            var lbl = key;
+            var y = this.getY(key, computedValues.max);
 
             if (this.props.yValueLabel) {
                 lbl = this.props.yValueLabel(key, i) || lbl;
             }
 
-            return <text className="Line_ylabel" key={i} x="-16px" y={y}>{lbl !== undefined ? lbl : key}</text>;
+            return <text className="Line_ylabel" key={i} x="-16px" y={y}>{lbl}</text>;
         }, this);
 
-        var left = this.props.padding,
-            bottom = height;
-
-        return (
-            <g>
-                {labels}
-            </g>
-        );
-                // <line className="Line_path" x1={left} x2={left} y1={0} y2={bottom} />
+        return <g className="yAxis">{labels}</g>;
     },
-    renderXAxis: function() {
+    renderXAxis: function(computedValues) {
         if (this.props.data[0].length !== this.props.data[1].length) {
             console.warn('benchmark and query days do not match!');
         }
 
+        var _this = this;
 
-        var range = this.getXLabels(this.props.data[0][0].date, this.props.data[0][this.props.data[0].length - 1].date);
+        var height = this.state.height + 24;
 
-        var left = this.props.padding,
-            right = this.state.width,
-            bottom = this.state.height - this.props.padding,
-            height = this.state.height + 24;
+        var labels = computedValues.xRange.map(function(l, i) {
+            var x = _this.getX(i, computedValues.xRange.length) + computedValues.xSpacer;
 
-        var xSpacer = (this.state.width - this.props.padding) / range.length;
-
-        var labels = range.map(function(l, i) {
-            var xPos = (xSpacer * i) + xSpacer;
-            if(i !== range.length -1) {
-                return <text className="Line_xlabel" key={i} x={xPos} y={height}>{l}</text>;                
+            if(i !== computedValues.xRange.length -1) {
+                return <text className="Line_xlabel" key={i} x={x} y={height}>{l}</text>;                
             }
         });
 
-        return (
-            <g>
-                {labels}
-            </g>
-        );
-                // <line className="Line_path" x1={left} x2={right} y1={bottom} y2={bottom} />
+        return <g className="xAxis">{labels}</g>;
     }
 });
 
