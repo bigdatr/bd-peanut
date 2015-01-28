@@ -71,7 +71,7 @@ var Column_series = React.createClass({
         }
 
         var css = new CSS(style);
-        css.translateY(ammount + '%');
+        css.translateY(Math.max(0, ammount) + '%');
         
         return (
             <div key={this.props.seriesIndex} 
