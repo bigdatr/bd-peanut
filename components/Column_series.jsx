@@ -72,15 +72,16 @@ var Column_series = React.createClass({
 
         var css = new CSS(style);
         css.translateY(Math.max(0, ammount) + '%');
-        
+
         return (
-            <div key={this.props.seriesIndex} 
-                className="Column_series" 
-                ref="wrapper"
-                style={css.prefix()}
-                onMouseOver={this.onColumnOver.bind(this, ammount)}
-                onMouseOut={this.onColumnOut}
-            ></div>
+            <div className="Column_seriesReposition" key={this.props.seriesIndex}>
+                <div
+                    className="Column_series" 
+                    style={css.prefix()}
+                    onMouseOver={this.onColumnOver.bind(this, ammount)}
+                    onMouseOut={this.onColumnOut}
+                ></div>
+            </div>
         );
     },
 });

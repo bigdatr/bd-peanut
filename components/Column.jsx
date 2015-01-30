@@ -201,6 +201,8 @@ var Column = React.createClass({
                 return _this.renderSeries(vv, ii, column, computedValues, stackSize, totalStackSize);
             }).reverse();
 
+            // console.log(series);
+
             
 
             // var seriesOrder = (_this.props.type === 'accumulative') ? series.reverse() : series;
@@ -208,9 +210,7 @@ var Column = React.createClass({
             return (
                 <div key={columnIndex} className="Column_col">
                     <div className="Column_seriesWrapper" onMouseOver={_this.onColumnWrapperOver.bind(_this, column)}>
-                        <div className="Column_seriesReposition">
-                            {series}
-                        </div>
+                        {series}
                     </div>
                     <div className="Graph_xlabel Column_xlabel">{_this.renderXLabel(column, columnIndex)}</div>                    
                 </div>
