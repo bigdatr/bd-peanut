@@ -141,8 +141,8 @@ var Line = React.createClass({
         return path.join(' ');
     },
     getXLabels: function(firstDate, lastDate) {
-        firstDate = moment(new Date(firstDate));
-        lastDate = moment(new Date(lastDate));
+        firstDate = moment(firstDate, 'YYYYMMDD');
+        lastDate = moment(lastDate, 'YYYYMMDD');
 
         var interval = lastDate.diff(firstDate, 'months'),
             labels = [],
