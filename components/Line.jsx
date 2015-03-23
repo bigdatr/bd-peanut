@@ -20,7 +20,9 @@ var Line = React.createClass({
             colors: [],
             tickInterval: 1,
             yAxisLabel: null,
-            padding: 0
+            padding: 0,
+
+            datapoints: true
         };
     },
     getInitialState: function() {
@@ -186,6 +188,7 @@ var Line = React.createClass({
                         {this.renderYAxis(computedValues)}
                         {this.renderXAxis(computedValues)}
                         {this.renderSeries(computedValues)}
+                        {this.renderDatapoints(computedValues)}
                     </svg>
                 </div>
             </div>
@@ -235,11 +238,40 @@ var Line = React.createClass({
             var x = _this.getX(i, computedValues.xRange.length) + computedValues.xSpacer;
 
             if(i !== computedValues.xRange.length -1) {
-                return <text className="Line_xlabel" key={i} x={x} y={height}>{l}</text>;                
+                return <text className="Line_xlabel" key={i} x={x} y={height}>{l}</text>;
             }
         });
 
         return <g className="xAxis">{labels}</g>;
+    },
+    renderDatapoints: function(computedValues) {
+        if (!this.props.datapoints) {
+            return null;
+        }
+
+        var _this = this;
+
+        var datapoints = this.props.data.map(function(series, seriesIndex) {
+            var seriesColor = _this.props.colors[seriesIndex];
+            var points = _.chain(series)
+                .map(function(d, i) {
+                    var x = _this.getX(i, series.length);
+                    var y = _this.getY(d.value, computedValues.max);
+
+                    return <circle  key={i}
+                                    cx={x}
+                                    cy={y}
+                                    r="3"
+                                    stroke={seriesColor}
+                                    strokeWidth="2"
+                                    fill="#fff" />;
+                })
+                .value();
+
+            return <g className={"datapoints_series datapoints_series-" + seriesIndex}>{points}</g>;
+        });
+
+        return <g className="datapoints">{datapoints}</g>;
     }
 });
 

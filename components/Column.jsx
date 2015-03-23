@@ -15,7 +15,10 @@ var Column = React.createClass({
     displayName: 'Column',
     mixins: [ClassMixin],
     propTypes: {         
-        data: React.PropTypes.array.isRequired,
+        data: React.PropTypes.oneOfType([
+            React.PropTypes.array,
+            React.PropTypes.object
+        ]).isRequired,
         colors: React.PropTypes.arrayOf(React.PropTypes.string),
         displayAxis: React.PropTypes.bool,
         xAxisLabel: React.PropTypes.func,
@@ -88,6 +91,11 @@ var Column = React.createClass({
     getComputedValues: function(data, tickInterval) {
         data = data || this.props.data;
 
+        // Convert immutable to JS
+        if (data.size && data.toJS) {
+            data = data.toJS();
+        }
+
         tickInterval = tickInterval || this.props.tickInterval;
 
         var _values = _.chain(data)
@@ -134,6 +142,11 @@ var Column = React.createClass({
     render: function () {
         var classes = this.ClassMixin_getClass('Column');
         var data = this.props.data;
+
+        // Convert immutable to JS
+        if (data.size && data.toJS) {
+            data = data.toJS();
+        }
 
         var computedValues = this.getComputedValues(data, this.props.tickInterval);
 
