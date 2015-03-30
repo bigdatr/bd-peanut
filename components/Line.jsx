@@ -3,6 +3,7 @@
 var React = require('react'),
     _ = require('lodash'),
     moment = require('moment');
+var Immutable = require('immutable');
 
 var Maths = require('bd-stampy/utils/Maths');
 var Legend = require('./Legend.jsx');
@@ -12,11 +13,11 @@ var _MAX_TICKS = 10;
 var Line = React.createClass({
     displayName: 'Line',
     propTypes: {         
-        data: React.PropTypes.array
+        data: React.PropTypes.object
     },
     getDefaultProps: function() {
         return {
-            data: [],
+            data: Immutable.List(),
             colors: [],
             tickInterval: 1,
             yAxisLabel: null,
@@ -32,7 +33,9 @@ var Line = React.createClass({
         };
     },
     componentDidMount: function() {
-        this.setState({width: this.refs.graphContent.getDOMNode().clientWidth});
+        this.setState({
+            width: this.refs.graphContent.getDOMNode().clientWidth
+        });
     },
     getY: function(val, MAX) {
         var h = this.state.height - this.props.padding;
@@ -50,19 +53,14 @@ var Line = React.createClass({
         data = data || this.props.data;
         tickInterval = tickInterval || this.props.tickInterval;
 
-        var _values = _.chain(data)
-                            .map(function(s) {
-                                return s.map(function(d) {
-                                    return d.value;
-                                });
-                            })
-                            .flatten()
-                            .remove(null)
-                            .value();
-
-        var extent = Maths.extent(_values);
+        var _values = data
+                        .map((s) => {
+                            return s.map((d) => d.get('value'));
+                        })
+                        .flatten()
+                        .sort();
         
-        var max = extent[1] || 0;
+        var max = _values.last() || 0;
         var roundToNearest = tickInterval;
         var roundMax = Math.ceil(max / roundToNearest) * roundToNearest;
 
@@ -105,74 +103,97 @@ var Line = React.createClass({
 
 
         // X Calcs
-        var xRange = this.getXLabels(this.props.data[0][0].date, this.props.data[0][this.props.data[0].length - 1].date);
-        var xSpacer = (this.state.width - this.props.padding) / xRange.length;
+        var minDate = this.props.data.first().first().get('date');
+        var maxDate = this.props.data.first().last().get('date');
+
+        var xRange = this.getXLabels(minDate, maxDate);
 
         return {
-            min: extent[0] || 0,
+            min: _values.first() || 0,
             max: roundMax,
             numberOfTicks: numberOfTicks,
             ySpacer: ySpacer,
             yPadding: yPadding,
             yRange: yRange,
-            xRange: xRange,
-            xSpacer: xSpacer
+            xRange: xRange
         };
     },
     getPath: function(series, MAX) {
-        if (!series || series.length === 0) {
+        if (!series || series.size === 0) {
             return 'M0,0';
         }
 
         var _this = this;
 
-        var path = _.chain(series)
-                        .map(function(d, i) {
-                            return {
-                                x: _this.getX(i, series.length),
-                                y: _this.getY(d.value, MAX)
+        var path = series
+                        .map((d, i) => {
+                            var coord = {
+                                x: _this.getX(i, series.size),
+                                y: _this.getY(d.get('value'), MAX)
                             };
-                        })
-                        .map(function(d, i) {
+
                             var c = i === 0 ? 'M' : 'L';
-
-                            return c + [d.x, d.y].join(',');
+                            return c + [coord.x, coord.y].join(',');
                         })
-                        .value();
+                        .join(' ');
 
-        return path.join(' ');
+        return path;
     },
     getXLabels: function(firstDate, lastDate) {
         firstDate = moment(firstDate, 'YYYYMMDD');
         lastDate = moment(lastDate, 'YYYYMMDD');
 
-        var interval = lastDate.diff(firstDate, 'months'),
-            labels = [],
-            interval_type = 'months',
-            interval_format = 'MMM \'YY';
-        
-        // WEEKS
-        if (interval <= 3) {
-            interval = lastDate.diff(firstDate, 'weeks');
-            interval_type = 'weeks';
-            firstDate = firstDate.startOf('week');
-            interval_format = 'D MMM \'YY';
-        }
-        
-        // DAYS
-        // if (interval_type === 'weeks' && interval <= 2) {
-        //     console.log(interval);
-        //     interval = lastDate.diff(firstDate, 'days');
-        //     interval_type = 'days';
-        //     firstDate = firstDate.startOf('day');
-        //     interval_format = 'ddD';
-        // }
+        var interval = lastDate.diff(firstDate, 'days');
+        var interval_format = 'dd DD-MMM-YY';
+        var interval_type = 'day';
 
-        for (var i=0; i < interval; i++) {
-            labels.push(moment(firstDate).add(i+1, interval_type).format(interval_format));
+        var labels = [];
+
+        if (interval >= 85) {
+            // MONTHS
+            interval_format = 'MMM YY';
+            interval_type = 'month';
+        }
+        else if (interval >= 14) {
+            // WEEKS
+            interval_format = 'D MMM YY';
+            interval_type = 'week';
+        }
+        else {
+            // WEEKS
+            interval_format = 'dd D/M';
+            interval_type = 'day';
+        }
+
+        var _labelCount = interval + 1;
+
+        for (var i=0; i < _labelCount; i++) {
+            var nextLabel = moment(firstDate)
+                                .add(i, 'days')
+                                .startOf(interval_type);
+
+            if (nextLabel.isBefore(firstDate)) {
+                nextLabel = firstDate;
+            }
+
+            labels.push(nextLabel.format(interval_format));
         }
 
         return labels;
+    },
+    onShowDatapointDetails: function(d, x, y) {
+        this.setState({
+            currentDatapoint: {
+                d: d,
+                x: x,
+                y: y
+            }
+        });
+    },
+    onHideDatapointDetails: function() {
+        this.setState({
+            currentDatapoint: null
+        });
     },
     render: function () {
         var computedValues = this.getComputedValues(this.props.data, this.props.tickInterval);
@@ -190,24 +211,29 @@ var Line = React.createClass({
                         {this.renderSeries(computedValues)}
                         {this.renderDatapoints(computedValues)}
                     </svg>
+
+                    {this.renderTooltip()}
                 </div>
             </div>
         );
     },
     renderSeries: function(computedValues) {
-        var data = this.props.data || [];
+        var data = this.props.data || Immutable.List();
 
-        return data.map(function(d, i) {
-            var seriesStyle = {
-                stroke: this.props.colors[i]
-            };
+        return data
+                .map(function(d, i) {
+                    var seriesStyle = {
+                        stroke: this.props.colors[i]
+                    };
 
-            return (
-                <g key={i} className={'series series-' + (i+1)}>
-                    <path className="Line_path" style={seriesStyle} d={this.getPath(d, computedValues.max)} />
-                </g>
-            );
-        }.bind(this)).reverse();
+                    return (
+                        <g key={i} className={'series series-' + (i+1)}>
+                            <path className="Line_path" style={seriesStyle} d={this.getPath(d, computedValues.max)} />
+                        </g>
+                    );
+                }.bind(this))
+                .reverse()
+                .toJS();
     },
     renderYAxis: function (computedValues) {
         var labels = _.map(computedValues.yRange, function(key, i) {
@@ -225,21 +251,25 @@ var Line = React.createClass({
     },
     renderXAxis: function(computedValues) {
         this.props.data.forEach(function(d, i) {
-            if (d.length !== this.props.data[i].length) {
+            if (d.size !== this.props.data.get(i).size) {
                 console.warn('Each series must have a value for the same data points');
             }
         }.bind(this));
 
         var _this = this;
-
         var height = this.state.height + 24;
 
         var labels = computedValues.xRange.map(function(l, i) {
-            var x = _this.getX(i, computedValues.xRange.length) + computedValues.xSpacer;
+            var nextLabel = l;
+            var prevLabel = computedValues.xRange[i-1];
 
-            if(i !== computedValues.xRange.length -1) {
-                return <text className="Line_xlabel" key={i} x={x} y={height}>{l}</text>;
+            if (nextLabel === prevLabel) {
+                return null;
             }
+
+            var x = _this.getX(i, computedValues.xRange.length);
+
+            return <text className="Line_xlabel" key={i} x={x} y={height}>{nextLabel}</text>;
         });
 
         return <g className="xAxis">{labels}</g>;
@@ -251,27 +281,72 @@ var Line = React.createClass({
 
         var _this = this;
 
-        var datapoints = this.props.data.map(function(series, seriesIndex) {
-            var seriesColor = _this.props.colors[seriesIndex];
-            var points = _.chain(series)
-                .map(function(d, i) {
-                    var x = _this.getX(i, series.length);
-                    var y = _this.getY(d.value, computedValues.max);
+        var currentDatapoint = this.state.currentDatapoint ? this.state.currentDatapoint.d : null;
 
-                    return <circle  key={i}
-                                    cx={x}
-                                    cy={y}
-                                    r="3"
-                                    stroke={seriesColor}
-                                    strokeWidth="2"
-                                    fill="#fff" />;
-                })
-                .value();
+        var datapoints = this.props.data
+                            .map(function(series, seriesIndex) {
+                                var seriesColor = _this.props.colors[seriesIndex];
 
-            return <g className={"datapoints_series datapoints_series-" + seriesIndex}>{points}</g>;
-        });
+                                var points = series
+                                    .map(function(d, i) {
+                                        var x = _this.getX(i, series.size);
+                                        var y = _this.getY(d.get('value'), computedValues.max);
+
+                                        return <circle  key={i}
+                                                        cx={x}
+                                                        cy={y}
+                                                        r="3"
+                                                        stroke={seriesColor}
+                                                        strokeWidth="2"
+                                                        fill={currentDatapoint === d ? seriesColor : '#fff'}
+                                                        onMouseOver={_this.onShowDatapointDetails.bind(_this, d, x, y)}
+                                                        onMouseOut={_this.onHideDatapointDetails} />;
+                                    }).toJS();
+
+                                return <g key={seriesIndex} className={"datapoints_series datapoints_series-" + seriesIndex}>{points}</g>;
+                            })
+                            .toJS();
 
         return <g className="datapoints">{datapoints}</g>;
+    },
+    renderTooltip: function() {
+        if (!this.props.datapoints || !this.state.currentDatapoint) {
+            return null;
+        }
+
+        var currentDatapoint = this.state.currentDatapoint;
+
+        var styles = {
+            datapointDetails: {
+                position: 'absolute',
+                backgroundColor: 'hotpink',
+                color: '#fff',
+                fontSize: '0.9em',
+                fontWeight: 600,
+                textAlign: 'center',
+                padding: 10,
+
+                left: currentDatapoint.x,
+                top: currentDatapoint.y - 90
+            },
+            value: {
+                fontSize: 40,
+                fontWeight: 'bold'
+            },
+            date: {
+                fontWeight: 200,
+            }
+        };
+
+        var date = moment(currentDatapoint.d.get('date'), 'YYYYMMDD').format('Do MMMM YYYY');
+        var value = currentDatapoint.d.get('value').toFixed(2);
+        
+        return (
+            <div style={styles.datapointDetails}>
+                <div style={styles.value}>{value}</div>
+                <div style={styles.date}>{date}</div>
+            </div>
+        );
     }
 });
 
