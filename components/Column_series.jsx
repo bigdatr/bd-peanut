@@ -56,7 +56,7 @@ var Column_series = React.createClass({
             ammount = 100;
         }
         else if(this.props.containerSize) {
-            ammount = 100 - ((this.props.containerSize * value / max) / this.props.containerSize * 100);
+            ammount = 100 - (Math.ceil(this.props.containerSize * value / max) / this.props.containerSize * 100);
         } else {
             // no value is 0;
             ammount = 100;
