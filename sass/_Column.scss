@@ -55,7 +55,8 @@ $yaxisColor: grey(90);
 }
 
 .Column_xlabel {
-    top: 100%;
+    height: $peanut-chart-height;
+    bottom: -1.5rem;
     padding-top: .2rem;   
     margin-top: .25rem;
 }

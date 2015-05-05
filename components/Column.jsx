@@ -186,9 +186,7 @@ var Column = React.createClass({
         }        
     },
     renderColumns: function (data, computedValues) {
-        var _this = this;
-
-        var columns = _.map(data, function(column, columnIndex){
+        var columns = _.map(data, (column, columnIndex) => {
             var stackSize = 0;
             var totalStackSize = 0;
             
@@ -196,23 +194,23 @@ var Column = React.createClass({
                 totalStackSize += val;
             });
 
-            var series = _.map(column.series, function(vv, ii) {
+            var series = _.map(column.series, (vv, ii) => {
                 stackSize += vv;
-                return _this.renderSeries(vv, ii, column, computedValues, stackSize, totalStackSize);
+                return this.renderSeries(vv, ii, column, computedValues, stackSize, totalStackSize);
             }).reverse();
 
             // console.log(series);
 
             
 
-            // var seriesOrder = (_this.props.type === 'accumulative') ? series.reverse() : series;
+            // var seriesOrder = (this.props.type === 'accumulative') ? series.reverse() : series;
 
             return (
-                <div key={columnIndex} className="Column_col">
-                    <div className="Column_seriesWrapper" onMouseOver={_this.onColumnWrapperOver.bind(_this, column)}>
+                <div key={columnIndex} className="Column_col" style={{width: 100 / this.props.data.length + '%'}}>
+                    <div className="Column_seriesWrapper" onMouseOver={this.onColumnWrapperOver.bind(this, column)}>
                         {series}
                     </div>
-                    <div className="Graph_xlabel Column_xlabel">{_this.renderXLabel(column, columnIndex)}</div>                    
+                    <div className="Graph_xlabel Column_xlabel">{this.renderXLabel(column, columnIndex)}</div>                    
                 </div>
             );
         });
