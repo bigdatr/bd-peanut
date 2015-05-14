@@ -219,7 +219,7 @@ var Column = React.createClass({
             // var seriesOrder = (this.props.type === 'accumulative') ? series.reverse() : series;
 
             return (
-                <div key={columnIndex} className="Column_col" style={{width: 100 / this.props.data.length + '%'}}>
+                <div key={columnIndex} className="Column_col" style={{width: 100 / data.length + '%'}}>
                     <div className="Column_seriesWrapper" onMouseOver={this.onColumnWrapperOver.bind(this, column)}>
                         {series}
                     </div>
