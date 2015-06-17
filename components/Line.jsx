@@ -123,6 +123,10 @@ var Line = React.createClass({
             return 'M0,0';
         }
 
+        if (series.size === 1) { // copy the first( and the only) value, to draw a line.
+            series = series.push(series.first());
+        }
+
         var _this = this;
 
         var path = series
