@@ -83,7 +83,7 @@ var Column_series = React.createClass({
                 ></div>
             </div>
         );
-    },
+    }
 });
 
 module.exports = Column_series;

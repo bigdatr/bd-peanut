@@ -49,7 +49,7 @@ var Column = React.createClass({
     getInitialState: function () {
         return {
             tooltipValue: {},
-            mouseCoordinates: [0,0],
+            mouseCoordinates: [0, 0],
             tooTight: false
         };
     },
@@ -72,7 +72,7 @@ var Column = React.createClass({
     //         mouseCoordinates: [e.clientX - left, e.clientY - top]
     //     });
     // },
-    onColumnWrapperOver: function (value) {
+    onColumnWrapperOver: function () {
         // this.setState({
         //     tooltipValue: value.series,
         // });
