@@ -153,7 +153,12 @@ var Line = React.createClass({
 
         var labels = [];
 
-        if (interval >= 85) {
+        if (interval >= 365) {
+            // QUARTER
+            interval_format = '[Q]Q YY';
+            interval_type= 'quarter';
+        }
+        else if (interval >= 85) {
             // MONTHS
             interval_format = 'MMM YY';
             interval_type = 'month';
