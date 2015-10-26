@@ -24,18 +24,20 @@
     "Atridge D'Costa"
   ],
   "dependencies": {
-    "bd-stampy": "^0.3.16",
-    "immutable": "^3.7.4",
-    "jsx-loader": "^0.13.2",
-    "lodash": "^3.9.3",
-    "moment": "^2.10.6"
+    
+    "jsx-loader": "^0.13.2"
+    
   },
   "devDependencies": {
     "Tunic": "git://github.com/allanhortle/Tunic",
     "jest-cli": "^0.2.1"
   },
   "peerDependencies": {
-    "react": ">=0.13.3"
+    "react": ">=0.13.3",
+    "bd-stampy": ">=0.3.16",
+    "lodash": ">=3.9.3",
+    "moment": ">=2.10.6",
+    "immutable": ">=3.7.4"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/preprocessor.js",
