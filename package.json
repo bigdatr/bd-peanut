@@ -1,6 +1,6 @@
 {
   "name": "bd-peanut",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "React chart components",
   "main": "peanut.js",
   "scripts": {
@@ -24,9 +24,7 @@
     "Atridge D'Costa"
   ],
   "dependencies": {
-    
     "jsx-loader": "^0.13.2"
-    
   },
   "devDependencies": {
     "Tunic": "git://github.com/allanhortle/Tunic",
