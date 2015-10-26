@@ -24,11 +24,11 @@
     "Atridge D'Costa"
   ],
   "dependencies": {
-    "bd-stampy": "^0.1.46",
+    "bd-stampy": "^0.3.16",
     "immutable": "^3.7.4",
     "jsx-loader": "^0.13.2",
     "lodash": "^3.9.3",
-    "moment": "^2.10.3",
+    "moment": "^2.10.6",
     "react": "^0.13.3"
   },
   "devDependencies": {
