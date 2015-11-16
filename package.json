@@ -1,6 +1,6 @@
 {
   "name": "bd-peanut",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "React chart components",
   "main": "peanut.js",
   "scripts": {
