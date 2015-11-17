@@ -2,12 +2,12 @@
 
 var React = require('react');
 var _ = require('lodash');
-var Maths = require('bd-stampy/utils/Maths');
+var Maths = require('../utils/Maths');
 var Legend = require('./Legend.jsx');
 
 var Column_series = require('./Column_series.jsx');
 
-var ClassMixin = require('bd-stampy/mixins/ClassMixin');
+var ClassMixin = require('../mixins/ClassMixin');
 
 var _MAX_TICKS = 10;
 

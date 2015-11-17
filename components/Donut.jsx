@@ -2,7 +2,7 @@
 
 var React = require('react');
 
-var CSS = require('bd-stampy/utils/CSS');
+var CSS = require('../utils/CSS');
 
 var Donut = React.createClass({
     displayName: 'Donut',

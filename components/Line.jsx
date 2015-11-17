@@ -5,7 +5,7 @@ var React = require('react'),
     moment = require('moment');
 var Immutable = require('immutable');
 
-var Maths = require('bd-stampy/utils/Maths');
+var Maths = require('../utils/Maths');
 var Legend = require('./Legend.jsx');
 
 var _MAX_TICKS = 10;
