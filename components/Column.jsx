@@ -1,6 +1,7 @@
 
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var _ = require('lodash');
 var Maths = require('../utils/Maths');
 var Legend = require('./Legend.jsx');
@@ -54,7 +55,7 @@ var Column = React.createClass({
         };
     },
     componentDidMount: function () {
-        this.setState({containerSize: this.getDOMNode().offsetHeight});   
+        this.setState({containerSize: ReactDOM.findDOMNode(this).offsetHeight});   
     },
     // onMouseMove: function (e) {
     //     var dom = this.refs.wrapper.getDOMNode();

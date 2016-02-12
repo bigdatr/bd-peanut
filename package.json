@@ -31,7 +31,8 @@
     "immutable": "^3.7.4"
   },
   "peerDependencies": {
-    "react": "^0.14.2",
+    "react": "0.14.x",
+    "react-dom": "0.14.x",
     "lodash": "^3.10.1",
     "moment": "^2.10.6",
     "immutable": "^3.7.4"
