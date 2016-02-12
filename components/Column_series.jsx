@@ -2,7 +2,7 @@
 var React = require('react');
 var _ = require('lodash');
 
-var CSS = require('bd-stampy/utils/CSS');
+var CSS = require('../utils/CSS');
 
 var Column_series = React.createClass({
     displayName: 'Column_series',

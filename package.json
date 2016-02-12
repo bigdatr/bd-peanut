@@ -1,10 +1,10 @@
 {
   "name": "bd-peanut",
-  "version": "0.2.7",
+  "version": "0.3.0",
   "description": "React chart components",
   "main": "peanut.js",
   "scripts": {
-    "test": "jest"
+    "test": "echo \"No tests\""
   },
   "repository": {
     "type": "git",
@@ -14,7 +14,7 @@
     "react",
     "charts"
   ],
-  "license": "BSD",
+  "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/bigdatr/bd-peanut/issues"
   },
@@ -24,21 +24,16 @@
     "Atridge D'Costa"
   ],
   "dependencies": {
-    "bd-stampy": "^0.1.46",
-    "immutable": "^3.7.4",
     "jsx-loader": "^0.13.2",
-    "lodash": "^3.9.3",
-    "moment": "^2.10.3",
-    "react": "^0.13.3"
+    "react": "^0.14.2",
+    "lodash": "^3.10.1",
+    "moment": "^2.10.6",
+    "immutable": "^3.7.4"
   },
-  "devDependencies": {
-    "Tunic": "git://github.com/allanhortle/Tunic",
-    "jest-cli": "^0.2.1"
-  },
-  "jest": {
-    "scriptPreprocessor": "<rootDir>/preprocessor.js",
-    "unmockedModulePathPatterns": [
-      "<rootDir>/node_modules/react"
-    ]
+  "peerDependencies": {
+    "react": "^0.14.2",
+    "lodash": "^3.10.1",
+    "moment": "^2.10.6",
+    "immutable": "^3.7.4"
   }
 }
