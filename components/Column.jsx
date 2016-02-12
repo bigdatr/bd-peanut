@@ -140,7 +140,7 @@ var Column = React.createClass({
         };
     },
     render: function () {
-        var classes = this.ClassMixin_getClass('Column');
+        var classes = this.createClassName('Column');
         var data = this.props.data;
 
         // Convert immutable to JS
@@ -193,7 +193,7 @@ var Column = React.createClass({
                         };
 
                         return <div key={i} className="Column_ylabel" style={style}>{lbl !== undefined ? lbl : key}</div>;
-                    }, this)}
+                    }.bind(this))}
                 </div>
             );           
         }        
@@ -292,7 +292,7 @@ var Column = React.createClass({
         if(data) {
             series = _.map(data, function (value, key) {
                 return this.renderSeriesItem(value, key);
-            }, this);           
+            }.bind(this));           
         }
 
         return <div className="Column_tooltip" style={style}>

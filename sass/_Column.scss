@@ -18,7 +18,7 @@ $yaxisColor: grey(90);
     position: relative;
     margin: 3rem 0;
 
-    @include tunic-breakpoint(tiny) {        
+    @include bruce-breakpoint(tiny) {        
         padding-left: $yaxisWidth;
     }
 
@@ -35,13 +35,13 @@ $yaxisColor: grey(90);
     border-left-style: solid;
     border-left-width: 4px;
 
-    @include tunic-breakpoint(small) {        
+    @include bruce-breakpoint(small) {        
         border-width: 8px;
     }
 }
 
 .Column_seriesWrapper {
-    @include tunic-flood;
+    @include bruce-flood;
     @extend %graphtype-table; 
     overflow: hidden;
 }
@@ -63,12 +63,12 @@ $yaxisColor: grey(90);
 
 // Y Axis
 .Column_yaxis {
-    @include tunic-flood;
-    @include tunic-fontWeight(bold);
+    @include bruce-flood;
+    font-weight: 600;
     width: $yaxisWidth-tiny;
     box-shadow: inset -2px 0 0 0 $yaxisColor;
 
-    @include tunic-breakpoint(tiny) {
+    @include bruce-breakpoint(tiny) {
         
         width: $yaxisWidth;
     }
@@ -116,7 +116,7 @@ $yaxisColor: grey(90);
 
 .Column-stacked {
     .Column_series {
-        @include tunic-flood();
+        @include bruce-flood();
         display: block;
     }
 }
@@ -130,7 +130,7 @@ $yaxisColor: grey(90);
     .Column_col {
         border-left-width: 2px;
 
-        @include tunic-breakpoint(small) {
+        @include bruce-breakpoint(small) {
             border-left-width: 4px;
         }
 

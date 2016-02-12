@@ -27,15 +27,15 @@ markup:
     color: grey(70);
     -webkit-font-smoothing: subpixel-antialiased;
 
-    @include tunic-breakpoint(small){
+    @include bruce-breakpoint(small){
         min-height: 160px;
     }
 }
 
 .PunchCardGraph_segment {
     @extend %graphtype-table_col;
-    animation: widthIn t($TIME_regular);
-    transition: t($TIME_regular);
+    animation: widthIn #{$TIME_regular}ms;
+    transition: #{$TIME_regular}ms;
     border-bottom: 2px solid;
     vertical-align: middle;
     height: 100%;
@@ -58,14 +58,14 @@ markup:
 .PunchCardGraph_fill {
     border-radius: 100%;
     background-color: grey(80);
-    transition: transform t($TIME_regular);
+    transition: transform #{$TIME_regular}ms;
     font-size: 1.2em;
 
-    @include tunic-breakpoint(tiny) {
+    @include bruce-breakpoint(tiny) {
         font-size: 1em;        
     }
 
-    @include tunic-breakpoint(small) {
+    @include bruce-breakpoint(small) {
         font-size: 2em;        
     }
 

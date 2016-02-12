@@ -17,13 +17,13 @@ markup:
     box-sizing: border-box;
     border: .25rem solid transparent;
 
-    @include tunic-breakpoint(tiny) {
+    @include bruce-breakpoint(tiny) {
         display: table-cell;
         border: 0;
         float: none;
     }
 
-    @include tunic-breakpoint(small) {
+    @include bruce-breakpoint(small) {
         padding: 1rem;
     }
 }
@@ -34,7 +34,7 @@ markup:
 // 
 
 .DonutGraph_content {
-    @include tunic-size(100%);
+    @include bruce-size(100%);
     margin: auto;
     position: relative;
     border-radius: 100%;
@@ -106,22 +106,24 @@ markup:
 // 
 
 .DonutGraph_labels {
-    @include tunic-position-verticalMiddle();
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     left: 0;
     right: 0;
     color: grey(40);    
 }
 
 .DonutGraph_value {
-    @include tunic-fontWeight(thin);
+    font-weight: 100;
     font-size: 2em;
     line-height: .8em;
 
-    @include tunic-breakpoint(small) {
+    @include bruce-breakpoint(small) {
         font-size: 2rem;
     }
 
-    @include tunic-breakpoint(medium) {
+    @include bruce-breakpoint(medium) {
         font-size: 3rem;
     }
 }

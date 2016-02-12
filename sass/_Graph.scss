@@ -12,25 +12,25 @@ $yaxisColor: grey(90);
     position: relative;
     margin: 3rem 0;
 
-    @include tunic-breakpoint(tiny) {        
+    @include bruce-breakpoint(tiny) {        
         padding-left: $yaxisWidth;
     }
 
 }
 
 .Graph_axis {
-    @include tunic-fontWeight(bold);
+    font-weight: 600;
 }
 
 
 // Y Axis
 .Graph_yaxis {
-    @include tunic-flood;
-    @include tunic-fontWeight(bold);
+    @include bruce-flood;
+    font-weight: 600;
     width: $yaxisWidth-tiny;
     // box-shadow: inset -2px 0 0 0 $yaxisColor;
 
-    @include tunic-breakpoint(tiny) {
+    @include bruce-breakpoint(tiny) {
         
         width: $yaxisWidth;
     }
@@ -42,7 +42,7 @@ $yaxisColor: grey(90);
  */
 
 %Graph_label {
-    @include tunic-fontWeight(bold);
+    font-weight: 600;
     display: block;
     position: absolute;
     text-align: center;
@@ -67,7 +67,7 @@ $yaxisColor: grey(90);
 %Graph_ytitle,
 .Graph_ytitle {    
     -ms-filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); /* for IE8 */
-    @include tunic-ellipsis;
+    @include bruce-ellipsis;
     position: relative;
     transform: rotate(-90deg);
     width: 126px;
@@ -81,7 +81,7 @@ $yaxisColor: grey(90);
     // white-space: nowrap;
     // top: -2.5rem;
 
-    // @include tunic-breakpoint(tiny) {        
+    // @include bruce-breakpoint(tiny) {        
     //     transform: rotate(-90deg) translateX(-50%);
     //     -ms-filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); /* for IE8 */
     //     top: 50%;

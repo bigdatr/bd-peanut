@@ -8,7 +8,7 @@ category:       Peanut => Charts
 
 .Line {
     
-    @include tunic-fontWeight(bold);
+    font-weight: 600;
     // 
     svg {
         box-shadow: -2px 2px grey(90);
