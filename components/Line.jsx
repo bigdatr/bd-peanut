@@ -254,7 +254,7 @@ var Line = React.createClass({
             }
 
             return <text className="Line_ylabel" key={i} x="-16px" y={y}>{lbl}</text>;
-        }, this);
+        }.bind(this));
 
         return <g className="yAxis">{labels}</g>;
     },

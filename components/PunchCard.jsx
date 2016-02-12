@@ -74,36 +74,7 @@ var PunchCard = React.createClass({
                     <div className="PunchCardGraph_fill" style={fillStyle} data-label={bubbleLabel}></div>
                 </div>            
             </div>;
-        }, this);
-        // if(this.state.width) {
-        //     var data = this.state.data;
-
-        //     var segmentTotal = _.reduce(data, function(sum, d) {
-        //         return sum + d.value;
-        //     }, 0);
-
-        //     var startRadius;
-
-        //     var segments = data.map(function(seg, i) {
-        //         var path = this.getPath(seg.value, segmentTotal, startRadius, seg.animationDecimal);
-
-        //         startRadius = path.startRadius + path.segmentAngle;
-
-        //         return (
-        //             <path   
-        //                 key={seg.label + i}
-        //                 stroke={this.props.stroke}
-        //                 strokeWidth={this.props.strokeWidth}
-        //                 fill={seg.fill || this.props.fill}
-        //                 dataOrder={i}
-        //                 d={path.d}
-        //             />
-        //         );
-
-        //     }.bind(this));
-
-        //     return <g>{segments}</g>;
-        // }        
+        }.bind(this));      
     }
 });
 
