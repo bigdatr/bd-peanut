@@ -28,20 +28,17 @@ var PunchCard = React.createClass({
 
         // grab field inside array
         function getFields(input, field) {
-            var output = [];
-            for (var i=0; i < input.length ; ++i)
-                output.push(input[i][field]);
-            return output;
+            return input.map(function(i) {
+                return i[field];
+            })
         }
 
         var result = getFields(this.props.data, 'value');
+        //console.log('result:', result);
 
         // find the maximum value
-        var MAX = Math.max.apply(null, result);
+        let MAX = Math.max(...result);
 
-
-        //console.log('result:', result);
-        //console.log('MAX:', MAX);
 
         return _.map(this.props.data, function(segment, key){
             var color = key >= halflLength ? 1 : 0;
