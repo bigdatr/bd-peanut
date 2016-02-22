@@ -5,7 +5,7 @@ var React = require('react'),
 
 var PunchCard = React.createClass({
     displayName: 'PunchCard',
-    propTypes: {         
+    propTypes: {
         data: React.PropTypes.array,
         xAxisLabel: React.PropTypes.func,
         bubbleLabel: React.PropTypes.func
@@ -15,18 +15,33 @@ var PunchCard = React.createClass({
             data: [],
         };
     },
-     render: function () {
+    render: function () {
         return (
             <div className="PunchCardGraph">
                 {this.renderSegments()}
             </div>
         );
-        
+
     },
     renderSegments: function() {
         var halflLength = Math.floor(this.props.data.length / 2);
 
-        var MAX = _.max(this.props.data, 'value').value;
+        // grab field inside array
+        function getFields(input, field) {
+            var output = [];
+            for (var i=0; i < input.length ; ++i)
+                output.push(input[i][field]);
+            return output;
+        }
+
+        var result = getFields(this.props.data, 'value');
+
+        // find the maximum value
+        var MAX = Math.max.apply(null, result);
+
+
+        //console.log('result:', result);
+        //console.log('MAX:', MAX);
 
         return _.map(this.props.data, function(segment, key){
             var color = key >= halflLength ? 1 : 0;
@@ -40,7 +55,10 @@ var PunchCard = React.createClass({
                 transform: 'scale(' + segment.value / MAX + ')'
             };
 
-            
+            //console.log('segment.value:', segment.value);
+            //console.log('MAX:', MAX);
+
+
             // Middle bubble
             if (key === halflLength) {
                 delete fillStyle.backgroundColor;
@@ -72,9 +90,9 @@ var PunchCard = React.createClass({
             return <div className="PunchCardGraph_segment" data-label={xAxisLabel} style={style} key={key}>
                 <div className="PunchCardGraph_wrap">
                     <div className="PunchCardGraph_fill" style={fillStyle} data-label={bubbleLabel}></div>
-                </div>            
+                </div>
             </div>;
-        }.bind(this));      
+        }.bind(this));
     }
 });
 
