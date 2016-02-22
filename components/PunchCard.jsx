@@ -26,18 +26,8 @@ var PunchCard = React.createClass({
     renderSegments: function() {
         var halflLength = Math.floor(this.props.data.length / 2);
 
-        // grab field inside array
-        function getFields(input, field) {
-            return input.map(function(i) {
-                return i[field];
-            })
-        }
-
-        var result = getFields(this.props.data, 'value');
-        //console.log('result:', result);
-
-        // find the maximum value
-        let MAX = Math.max(...result);
+        // iterate over prop.value, find maximum
+        let MAX = Math.max(...this.props.data.map(ii => ii.value));
 
 
         return _.map(this.props.data, function(segment, key){
