@@ -30,7 +30,7 @@ var PunchCard = React.createClass({
         let MAX = Math.max(...this.props.data.map(ii => ii.value));
 
 
-        return _.map(this.props.data, function(segment, key){
+        return array.map(this.props.data, function(segment, key){
             var color = key >= halflLength ? 1 : 0;
 
             var style = {
