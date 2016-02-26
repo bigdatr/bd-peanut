@@ -1,7 +1,6 @@
 
 
 var React = require('react'),
-    _ = require('lodash');
 
 var PunchCard = React.createClass({
     displayName: 'PunchCard',
@@ -26,24 +25,10 @@ var PunchCard = React.createClass({
     renderSegments: function() {
         var halflLength = Math.floor(this.props.data.length / 2);
 
-        // grab field inside array
-        function getFields(input, field) {
-            var output = [];
-            for (var i=0; i < input.length ; ++i)
-                output.push(input[i][field]);
-            return output;
-        }
+        // iterate over prop.value, find maximum
+        let MAX = Math.max(...this.props.data.map(ii => ii.value));
 
-        var result = getFields(this.props.data, 'value');
-
-        // find the maximum value
-        var MAX = Math.max.apply(null, result);
-
-
-        //console.log('result:', result);
-        //console.log('MAX:', MAX);
-
-        return _.map(this.props.data, function(segment, key){
+        return this.props.data.map(function(segment, key){
             var color = key >= halflLength ? 1 : 0;
 
             var style = {
