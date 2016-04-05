@@ -21,7 +21,8 @@
   "homepage": "https://github.com/bigdatr/bd-peanut",
   "author": [
     "Allan Hortle",
-    "Atridge D'Costa"
+    "Atridge D'Costa",
+    "Chuan Lim"
   ],
   "dependencies": {
     "jsx-loader": "^0.13.2",
