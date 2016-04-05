@@ -1,6 +1,6 @@
 {
   "name": "bd-peanut",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "React chart components",
   "main": "peanut.js",
   "scripts": {
@@ -21,7 +21,8 @@
   "homepage": "https://github.com/bigdatr/bd-peanut",
   "author": [
     "Allan Hortle",
-    "Atridge D'Costa"
+    "Atridge D'Costa",
+    "Chuan Lim"
   ],
   "dependencies": {
     "jsx-loader": "^0.13.2",

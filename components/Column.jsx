@@ -182,7 +182,7 @@ var Column = React.createClass({
             return (
                 <div className="Column_yaxis">
                     <div className="Graph_ytitle">{this.props.yAxisLabel}</div>
-                    {_.map(range, function(key, i) {
+                    {range.map(function(key, i) {
                         var lbl = key;
 
                         if (this.props.yValueLabel) {
@@ -200,7 +200,7 @@ var Column = React.createClass({
         }        
     },
     renderColumns: function (data, computedValues) {
-        var columns = _.map(data, (column, columnIndex) => {
+        var columns = data.map((column, columnIndex) => {
             var stackSize = 0;
             var totalStackSize = 0;
             
@@ -208,7 +208,7 @@ var Column = React.createClass({
                 totalStackSize += val;
             });
 
-            var series = _.map(column.series, (vv, ii) => {
+            var series = column.series.map((vv, ii) => {
                 stackSize += vv;
                 return this.renderSeries(vv, ii, column, computedValues, stackSize, totalStackSize);
             }).reverse();
@@ -291,7 +291,7 @@ var Column = React.createClass({
         
 
         if(data) {
-            series = _.map(data, function (value, key) {
+            series = data.map(function (value, key) {
                 return this.renderSeriesItem(value, key);
             }.bind(this));           
         }
