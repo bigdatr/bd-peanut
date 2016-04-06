@@ -1,13 +1,11 @@
-
-
 var React = require('react');
 var ReactDOM = require('react-dom');
+
 var _ = require('lodash');
 var Maths = require('../utils/Maths');
 var Legend = require('./Legend.jsx');
 
 var Column_series = require('./Column_series.jsx');
-
 var ClassMixin = require('../mixins/ClassMixin');
 
 var _MAX_TICKS = 10;
@@ -15,7 +13,7 @@ var _MAX_TICKS = 10;
 var Column = React.createClass({
     displayName: 'Column',
     mixins: [ClassMixin],
-    propTypes: {         
+    propTypes: {
         data: React.PropTypes.oneOfType([
             React.PropTypes.array,
             React.PropTypes.object
@@ -55,7 +53,7 @@ var Column = React.createClass({
         };
     },
     componentDidMount: function () {
-        this.setState({containerSize: ReactDOM.findDOMNode(this).offsetHeight});   
+        this.setState({containerSize: ReactDOM.findDOMNode(this).offsetHeight});
     },
     // onMouseMove: function (e) {
     //     var dom = this.refs.wrapper.getDOMNode();
@@ -64,11 +62,11 @@ var Column = React.createClass({
     //     var ct = e.currentTarget;
     //     var top = e.currentTarget.offsetTop + e.currentTarget.offsetHeight;
     //     // var left = e.currentTarget.offsetWidth;
-        
+
     //     var left = 0;
 
     //     // console.log(ct.offsetWidth, ct.offsetLeft, e.clientX, dom.offsetLeft);
-    
+
     //     this.setState({
     //         mouseCoordinates: [e.clientX - left, e.clientY - top]
     //     });
@@ -83,10 +81,10 @@ var Column = React.createClass({
             currentValue: value,
             hover: true
         });
-    }, 
+    },
     onColumnOut: function (e) {
         if(e.currentTarget === e.target) {
-            this.setState({hover: false});            
+            this.setState({hover: false});
         }
     },
     getComputedValues: function(data, tickInterval) {
@@ -100,15 +98,15 @@ var Column = React.createClass({
         tickInterval = tickInterval || this.props.tickInterval;
 
         var _values = _.chain(data)
-                .map('series')
-                .flatten()
-                .remove(null)
-                .value();
+            .map('series')
+            .flatten()
+            .remove(null)
+            .value();
 
         var extent = Maths.extent(_values);
-        
+
         var max = extent[1] || 0;
-        
+
         if(this.props.yAxisMax) {
             max = this.props.yAxisMax;
         }
@@ -119,7 +117,7 @@ var Column = React.createClass({
 
         if (numberOfTicks > _MAX_TICKS) {
             var nextTickInterval = tickInterval * 2;
-            
+
             // To avoid going over the yMax
             if (this.props.yMax && roundMax > this.props.yMax) {
                 if (this.props.tickInterval === 1 || this.props.tickInterval % 2 === 0) {
@@ -174,7 +172,7 @@ var Column = React.createClass({
     renderYAxis: function (computedValues) {
         if (this.props.displayAxis) {
             var range = [];
-            
+
             if (computedValues.numberOfTicks > 0) {
                 range = Maths.tickRange(computedValues.numberOfTicks, 0, computedValues.max);
             }
@@ -182,7 +180,7 @@ var Column = React.createClass({
             return (
                 <div className="Column_yaxis">
                     <div className="Graph_ytitle">{this.props.yAxisLabel}</div>
-                    {range.map(function(key, i) {
+                    {_.map(range, function(key, i) {
                         var lbl = key;
 
                         if (this.props.yValueLabel) {
@@ -196,26 +194,26 @@ var Column = React.createClass({
                         return <div key={i} className="Column_ylabel" style={style}>{lbl !== undefined ? lbl : key}</div>;
                     }.bind(this))}
                 </div>
-            );           
-        }        
+            );
+        }
     },
     renderColumns: function (data, computedValues) {
-        var columns = data.map((column, columnIndex) => {
+        var columns = _.map(data, (column, columnIndex) => {
             var stackSize = 0;
             var totalStackSize = 0;
-            
+
             column.series.forEach(function(val) {
                 totalStackSize += val;
             });
 
-            var series = column.series.map((vv, ii) => {
+            var series = _.map(column.series, (vv, ii) => {
                 stackSize += vv;
                 return this.renderSeries(vv, ii, column, computedValues, stackSize, totalStackSize);
             }).reverse();
 
             // console.log(series);
 
-            
+
 
             // var seriesOrder = (this.props.type === 'accumulative') ? series.reverse() : series;
 
@@ -224,7 +222,7 @@ var Column = React.createClass({
                     <div className="Column_seriesWrapper" onMouseOver={this.onColumnWrapperOver.bind(this, column)}>
                         {series}
                     </div>
-                    <div className="Graph_xlabel Column_xlabel">{this.renderXLabel(column, columnIndex)}</div>                    
+                    <div className="Graph_xlabel Column_xlabel">{this.renderXLabel(column, columnIndex)}</div>
                 </div>
             );
         });
@@ -279,21 +277,21 @@ var Column = React.createClass({
     },
     renderTooltip: function (data) {
         var style = {
-            top: this.state.mouseCoordinates[1],
-            left: this.state.mouseCoordinates[0],
-            opacity: 0
-        },
-        series;
+                top: this.state.mouseCoordinates[1],
+                left: this.state.mouseCoordinates[0],
+                opacity: 0
+            },
+            series;
 
         if(this.state.hover) {
             style.opacity = 1;
         }
-        
+
 
         if(data) {
-            series = data.map(function (value, key) {
+            series = _.map(data, function (value, key) {
                 return this.renderSeriesItem(value, key);
-            }.bind(this));           
+            }.bind(this));
         }
 
         return <div className="Column_tooltip" style={style}>
